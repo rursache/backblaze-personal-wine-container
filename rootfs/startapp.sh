@@ -12,7 +12,7 @@ pinned_bz_version_file="/PINNED_BZ_VERSION"
 pinned_bz_version=$(sed -n '1p' "$pinned_bz_version_file")
 pinned_bz_version_url=$(sed -n '2p' "$pinned_bz_version_file")
 
-export FORCE_LATEST_UPDATE="true" #disable pinned version since URL is excluded from archive.org
+export FORCE_LATEST_UPDATE="false" #disable pinned version since URL is excluded from archive.org
 export WINEARCH="win64"
 export WINEDLLOVERRIDES="mscoree=" # Disable Mono installation
 
@@ -121,10 +121,9 @@ if [ -f "${WINEPREFIX}drive_c/Program Files (x86)/Backblaze/bzbui.exe" ]; then
         fi
     }
 
-
-
     # Check if auto-updates are disabled
     if [ "$DISABLE_AUTOUPDATE" = "true" ]; then
+        echo "127.0.0.1 f000.backblazeb2.com" >> /etc/hosts
         log_message "UPDATER: DISABLE_AUTOUPDATE=true, Auto-updates are disabled. Starting Backblaze without updating."
         start_app
     fi
