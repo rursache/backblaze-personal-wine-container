@@ -88,10 +88,24 @@ fetch_and_install() {
         WINEARCH="$WINEARCH" WINEPREFIX="$WINEPREFIX" wine64 "install_backblaze.exe" || handle_error "INSTALLER: Failed to install Backblaze"
     fi
 
+    if [ "$DISABLE_AUTOUPDATE" = "true" ]; then
+        mkdir -p "${WINEPREFIX}drive_c/Program Files (x86)/Backblaze"
+    
+        echo "" > "${WINEPREFIX}drive_c/Program Files (x86)/Backblaze/bzupdate"
+        echo "" > "${WINEPREFIX}drive_c/Program Files (x86)/Backblaze/bzupdates"
+    fi
 }
 
 start_app() {
     log_message "STARTAPP: Starting Backblaze version $(cat "$local_version_file")"
+
+    if [ "$DISABLE_AUTOUPDATE" = "true" ]; then
+        mkdir -p "${WINEPREFIX}drive_c/Program Files (x86)/Backblaze"
+    
+        echo "" > "${WINEPREFIX}drive_c/Program Files (x86)/Backblaze/bzupdate"
+        echo "" > "${WINEPREFIX}drive_c/Program Files (x86)/Backblaze/bzupdates"
+    fi
+    
     wine64 "${WINEPREFIX}drive_c/Program Files (x86)/Backblaze/bzbui.exe" -noquiet &
     sleep infinity
 }
